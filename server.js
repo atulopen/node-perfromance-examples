@@ -1,6 +1,7 @@
 const express = require('express');
 const PORT = 8000;
 const app = express();
+const cluster = require('cluster');
 
 const delay = (duration) => {
     const startTime = Date.now();
@@ -19,6 +20,14 @@ app.get('/delay', (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Listening at ${PORT}`);
-})
+if (cluster.isMaster) {
+    console.log('Master process started');
+    cluster.fork();
+    cluster.fork();
+} else {
+
+    console.log('Worker process started');
+    app.listen(PORT, () => {
+        console.log(`Listening at ${PORT}`);
+    })
+}
