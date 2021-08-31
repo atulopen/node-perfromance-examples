@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/delay', (req, res) => {
-    delay(9000);
+    delay(1000);
     res.send('Message after Delay')
 });
 
